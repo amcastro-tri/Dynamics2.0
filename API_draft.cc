@@ -17,7 +17,7 @@ typedef AutoDiffScalar<Eigen::Vector<Real,MY_FIXED_SIZE>> ADScalar;
 // The actual type of this problem setup
 typedef Real T;
 // We could've used autodiff scalars instead:
-// typedef Real ADScalar;
+// typedef ADScalar T;
 
 // Some convenient definitions
 typedef Eigen::Vector<T,3,1> Vector3t;
