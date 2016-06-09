@@ -12,6 +12,9 @@ The main concepts introduced are:
   `MBDWorld` and to show how options could be passed to it.
  - `MultiBodyTree`: It is the general purpose `RigidBodyTree` that supports a
  mixture of rigid as well as flexible (soft) bodies.
+ - `RigidBody`: Inherits from `Body`. 
+ - `ElasticBody`: Inherits from `Body`. Implements deformable bodies using modal
+ decomposition.
  - Each object is instantiated through a factory. This avoids the user making
  explicit `new` calls and hides the ownership handling from the user. The user
  does not need to worry about cleanup.
