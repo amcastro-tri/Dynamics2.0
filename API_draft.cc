@@ -16,6 +16,8 @@ typedef AutoDiffScalar<Eigen::Vector<Real,MY_FIXED_SIZE>> ADScalar;
 
 // The actual type of this problem setup
 typedef Real T;
+// We could've used autodiff scalars instead:
+// typedef Real ADScalar;
 
 // Some convenient definitions
 typedef Eigen::Vector<T,3,1> Vector3t;
@@ -51,7 +53,7 @@ int main()
     gravity->set(Vector3t(0.0, 9.81, 0.0));
     
     MultibodyTree<T>* triple_pendulum =
-        MultibodyTree<double>::CreateAndAddToMBDWorld(world);
+        MultibodyTree<T>::CreateAndAddToMBDWorld(world);
 
     RigidBody<T>* link1 =
         RigidBody<T>::CreateAndAddToMultibodyTree(triple_pendulum);
@@ -84,8 +86,8 @@ int main()
         "extremely_complex_body_modes_and_frequencies.modes", 3);
 
     // pin1 connects world (converts to Body*) to link1
-    RevoluteJoint<double>* pin1 =
-        RevoluteJoint<double>::CreateAndAddToMultibodyTree(
+    RevoluteJoint<T>* pin1 =
+        RevoluteJoint<T>::CreateAndAddToMultibodyTree(
             triple_pendulum,
             world /* parent Body */,
             Frame::Identity()                 /* Frame on parent body */,
@@ -93,8 +95,8 @@ int main()
             Frame::Translation(0.0, 1.0, 0.0) /* Frame on child body  */);
 
     // pin2 connects link1 to link2
-    RevoluteJoint<double>* pin2 =
-        RevoluteJoint<double>::CreateAndAddToMultibodyTree(
+    RevoluteJoint<T>* pin2 =
+        RevoluteJoint<T>::CreateAndAddToMultibodyTree(
             triple_pendulum,
             world /* parent Body */,
             Frame::Identity()                 /* Frame on parent body */,
@@ -102,8 +104,8 @@ int main()
             Frame::Translation(0.0, 1.0, 0.0) /* Frame on child body  */);
 
     // pin3 connects link2 to link3
-    RevoluteJoint<double>* pin3 =
-        RevoluteJoint<double>::CreateAndAddToMultibodyTree(
+    RevoluteJoint<T>* pin3 =
+        RevoluteJoint<T>::CreateAndAddToMultibodyTree(
             triple_pendulum,
             link2 /* parent Body */,
             Frame::Identity()                 /* Frame on parent body */,
