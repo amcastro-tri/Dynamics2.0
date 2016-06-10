@@ -31,6 +31,8 @@ int main()
     // pointer to the allocated type.
     // With that pointer the user can perform queries on the object.
     // MBDWorld inherits from systems::ContinuousSystem<T>
+    // It actually inherits from MBDSystem (see bellow) which in turns inherits
+    // from systems::ContinuousSystem<T>.
     MBDWorldSystem<T>* mbd_world_system = MBDWorldSystem<T>::Create();
     
     // The multibody dynamics world. MBDSystem owns it.
@@ -51,9 +53,26 @@ int main()
     UniformForceField* gravity =
         UniformForceField::CreateAndAddToMBDWorld(world);
     gravity->set(Vector3t(0.0, 9.81, 0.0));
+
+    // An MBDSystem inherits from systems::Diagram (it's a tree of systems).
+    // It contains all objects needed to represent an entire complex system.
+    // Think of Atlas with its rigid body tree, actuators, sensors, controllers.
+    //
+    // This will allow the creation of complex multibody models by composition.
+    // Imagine a waling robot with each of its limbs being their own system.
+    // Also, an MBDSystem will allow us to put an entire complex model such as
+    // Atlas in its own self contained object.
+    //
+    // Another example: I could've put all the objects and API calls in this
+    // example within a class TriplePendulum inheriting from MBDSystem.
+    // I could then create an even more complex case with multiple
+    // instantiations of the same pendulum class (with possibly different
+    // parameters).
+    MBDSystem<T>* triple_pendulum_sys =
+        MBDSystem<T>::CreateAndAddToMBDWorld(world);
     
     MultibodyTree<T>* triple_pendulum =
-        MultibodyTree<T>::CreateAndAddToMBDWorld(world);
+        MultibodyTree<T>::CreateAndAddToMBDSystem(triple_pendulum_sys);
 
     RigidBody<T>* link1 =
         RigidBody<T>::CreateAndAddToMultibodyTree(triple_pendulum);

@@ -5,14 +5,22 @@ pendulum. While link1 and link2 are rigid, the third link (link3) is elastic and
  modeled using modal decomposition using the first three modes.
 The main concepts introduced are:
  - `MBDWorld`: the Dynamics 2.0 manager of all bodies, joints, forces, and
- collision elements in the world.
+ collision elements in the world. It makes sure to "globally" connect
+ (or not if not needed) all of these objects and assign them with proper global
+ indexes to position their states in the global composite state vector.
  - `CollisionDispatcher`. The `MBDWorld` owns it. It is responsible to implement
  the collision dispatch of the model. In general it wont be necessary to expose
   it to the user. In this example we do so to show this is owned by the
   `MBDWorld` and to show how options could be passed to it.
+ - `MBDSystem`: It allows to create complex MBD models by composition
+ (it inherits from `Diagram`). It also allows to encapsulate a very complex
+ model by inheriting from this class.
+ Take Atlas as an example. We would put all of its code in an AtlasSystem
+ inheriting from `MBDSystem`. This `AtlasSystem` can then be instantiated as
+ many times as needed.
  - `MultiBodyTree`: It is the general purpose `RigidBodyTree` that supports a
  mixture of rigid as well as flexible (soft) bodies.
- - `RigidBody`: Inherits from `Body`. 
+ - `RigidBody`: Inherits from `Body`.
  - `ElasticBody`: Inherits from `Body`. Implements deformable bodies using modal
  decomposition.
  - Each object is instantiated through a factory. This avoids the user making
